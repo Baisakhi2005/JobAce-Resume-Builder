@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Professional Resume</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+      background-color: #f4f7fc;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 700px;
+      margin: 40px auto;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2, h3 {
+      color: #1e3a5f;
+    }
+
+    h2 {
+      font-weight: 600;
+      margin-top: 0;
+    }
+
+    .form-section {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-section label {
+      font-weight: 600;
+      color: #5a9bd4;
+      margin-bottom: 5px;
+    }
+
+    .form-section input,
+    .form-section textarea,
+    .form-section button {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .form-section button {
+      background-color: #5a9bd4;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    .form-section button:hover {
+      background-color: #3d7bb6;
+    }
+
+    .header img {
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      display: block;
+      margin: auto;
+    }
+
+    .header-info {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .section h3 {
+      margin-bottom: 10px;
+      color: #5a9bd4;
+    }
+
+    .skills-list, .languages-list {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .skills-list span, .languages-list span {
+      background-color: #e0f1fb;
+      color: #1e3a5f;
+      margin: 5px;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 14px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Resume Builder</h1>
+    <div class="form-section">
+      <label for="photo">Profile Picture:</label>
+      <input type="file" id="photo" accept="image/*" onchange="updateProfilePicture()" />
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" required />
+      <label for="email">Email:</label>
+      <input type="email" id="email" required />
+      <label for="phone">Phone:</label>
+      <input type="text" id="phone" required />
+      <label for="location">Location:</label>
+      <input type="text" id="location" required />
+      <label for="linkedin">LinkedIn URL:</label>
+      <input type="url" id="linkedin" required />
+      <label for="about">About Me:</label>
+      <textarea id="about" required></textarea>
+      <label>Skills:</label>
+      <div id="skills-fields">
+        <input type="text" class="skill-input" required />
+      </div>
+      <button type="button" onclick="addSkillField()">Add Skill</button>
+      <label>Education:</label>
+      <div id="education-fields">
+        <div class="education-entry">
+          <input type="text" placeholder="Institute" class="education-institute" required />
+          <input type="text" placeholder="Degree" class="education-degree" required />
+          <input type="text" placeholder="Year" class="education-year" required />
+          <input type="text" placeholder="Percentage/Grade" class="education-percent" required />
+        </div>
+      </div>
+      <button type="button" onclick="addEducationField()">Add Education</button>
+      <label>Work Experience:</label>
+      <div id="work-fields">
+        <input type="text" class="work-input" required />
+      </div>
+      <button type="button" onclick="addWorkField()">Add Work</button>
+      <label>Projects:</label>
+      <div id="projects-fields">
+        <input type="text" class="project-input" required />
+      </div>
+      <button type="button" onclick="addProjectField()">Add Project</button>
+      <label>Certifications (optional):</label>
+      <div id="certifications-fields">
+        <input type="text" class="certification-input" />
+      </div>
+      <button type="button" onclick="addCertificationField()">Add Certification</button>
+      <label for="languages">Languages (comma-separated):</label>
+      <input type="text" id="languages" required />
+      <label for="hobbies">Hobbies (comma-separated):</label>
+      <input type="text" id="hobbies" required />
+      <button onclick="generateResume()">Generate Resume</button>
+      <button onclick="downloadPDF()">Download as PDF</button>
+    </div>
+
+    <section id="resume" style="display:none;">
+      <header class="header">
+        <img id="resume-image" src="https://www.w3schools.com/w3images/avatar2.png" alt="Profile Picture">
+        <div class="header-info">
+          <h2 id="resume-name"></h2>
+          <p id="resume-email"></p>
+          <p id="resume-phone"></p>
+          <p id="resume-location"></p>
+          <p id="resume-linkedin"></p>
+        </div>
+      </header>
+      <main class="content">
+        <section class="section">
+          <h3>About Me</h3>
+          <p id="resume-about"></p>
+        </section>
+        <section class="section">
+          <h3>Skills</h3>
+          <div id="resume-skills" class="skills-list"></div>
+        </section>
+        <section class="section">
+          <h3>Education</h3>
+          <ul id="resume-education"></ul>
+        </section>
+        <section class="section">
+          <h3>Work Experience</h3>
+          <ul id="resume-work"></ul>
+        </section>
+        <section class="section">
+          <h3>Projects</h3>
+          <ul id="resume-projects"></ul>
+        </section>
+        <section class="section" id="certification-section">
+          <h3>Certifications</h3>
+          <ul id="resume-certifications"></ul>
+        </section>
+        <section class="section">
+          <h3>Languages</h3>
+          <div id="resume-languages" class="languages-list"></div>
+        </section>
+        <section class="section">
+          <h3>Hobbies</h3>
+          <p id="resume-hobbies"></p>
+        </section>
+      </main>
+    </section>
+    <footer><p>Designed by <a href="#">Your Name</a></p></footer>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    function updateProfilePicture() {
+      const file = document.getElementById("photo").files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => document.getElementById("resume-image").src = reader.result;
+      if (file) reader.readAsDataURL(file);
+    }
+
+    function addField(containerId, className, isRequired = true) {
+      const input = document.createElement("input");
+      input.className = className;
+      if (isRequired) input.required = true;
+      document.getElementById(containerId).appendChild(input);
+    }
+
+    function addSkillField() { addField("skills-fields", "skill-input"); }
+    function addWorkField() { addField("work-fields", "work-input"); }
+    function addProjectField() { addField("projects-fields", "project-input"); }
+    function addCertificationField() { addField("certifications-fields", "certification-input", false); }
+
+    function addEducationField() {
+      const container = document.getElementById("education-fields");
+      const div = document.createElement("div");
+      div.className = "education-entry";
+      div.innerHTML = `
+        <input type="text" placeholder="Institute" class="education-institute" required />
+        <input type="text" placeholder="Degree" class="education-degree" required />
+        <input type="text" placeholder="Year" class="education-year" required />
+        <input type="text" placeholder="Percentage/Grade" class="education-percent" required />
+      `;
+      container.appendChild(div);
+    }
+
+    function generateResume() {
+      const val = id => document.getElementById(id).value.trim();
+      const list = (selector) => Array.from(document.querySelectorAll(selector)).map(i => i.value.trim()).filter(Boolean);
+
+      const projects = list(".project-input");
+      if (!projects.length) {
+        alert("Please add at least one project.");
+        return;
+      }
+
+      document.getElementById("resume-name").innerText = val("name");
+      document.getElementById("resume-email").innerText = "Email: " + val("email");
+      document.getElementById("resume-phone").innerText = "Phone: " + val("phone");
+      document.getElementById("resume-location").innerText = "Location: " + val("location");
+      document.getElementById("resume-linkedin").innerHTML = "LinkedIn: <a href='" + val("linkedin") + "' target='_blank'>" + val("linkedin") + "</a>";
+      document.getElementById("resume-about").innerText = val("about");
+      document.getElementById("resume-hobbies").innerText = val("hobbies");
+      document.getElementById("resume-languages").innerHTML = val("languages").split(',').map(l => <span>${l.trim()}</span>).join('');
+      document.getElementById("resume-skills").innerHTML = list(".skill-input").map(i => <span>${i}</span>).join('');
+
+      const eduInstitutes = document.querySelectorAll(".education-institute");
+      const eduDegrees = document.querySelectorAll(".education-degree");
+      const eduYears = document.querySelectorAll(".education-year");
+      const eduPercents = document.querySelectorAll(".education-percent");
+
+      let eduHTML = "";
+      for (let i = 0; i < eduInstitutes.length; i++) {
+        const inst = eduInstitutes[i].value.trim();
+        const deg = eduDegrees[i].value.trim();
+        const yr = eduYears[i].value.trim();
+        const perc = eduPercents[i].value.trim();
+        if (inst && deg && yr && perc) {
+          eduHTML += <li><strong>${inst}</strong> - ${deg} (${yr}) - <em>${perc}</em></li>;
+        }
+      }
+      document.getElementById("resume-education").innerHTML = eduHTML;
+
+      document.getElementById("resume-work").innerHTML = list(".work-input").map(i => <li>${i}</li>).join('');
+      document.getElementById("resume-projects").innerHTML = projects.map(i => <li>${i}</li>).join('');
+
+      const certifications = list(".certification-input");
+      const certSection = document.getElementById("certification-section");
+      if (certifications.length) {
+        certSection.style.display = "block";
+        document.getElementById("resume-certifications").innerHTML = certifications.map(i => <li>${i}</li>).join('');
+      } else {
+        certSection.style.display = "none";
+      }
+
+      document.getElementById("resume").style.display = "block";
+    }
+
+    function downloadPDF() {
+      generateResume();
+      html2pdf().set({
+        margin: 0.5,
+        filename: 'my_resume.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      }).from(document.getElementById("resume")).save();
+    }
+  </script>
+</body>
+</html>
